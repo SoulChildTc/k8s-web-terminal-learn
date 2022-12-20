@@ -1,7 +1,7 @@
 ### Kubernetes Dashboard Web Terminal 学习
 核心代码来自于Kubernetes Dashboard
 
-![image](https://raw.githubusercontent.com/SoulChildTc/k8s-web-terminal-learn/master/image/1.png)
+![image](https://raw.githubusercontent.com/SoulChildTc/k8s-web-terminal-learn/master/1.png)
 
 相关文章
 
