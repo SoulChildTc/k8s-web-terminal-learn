@@ -1,16 +1,17 @@
-### Kubernetes Dashboard Web Terminal 学习
+## Kubernetes Dashboard Web Terminal 学习
 核心代码来自于Kubernetes Dashboard
 
 ![image](https://raw.githubusercontent.com/SoulChildTc/k8s-web-terminal-learn/master/1.png)
 
-相关文章
+相关文章<br>
+https://soulchild.cn/2950.html
 
 
-#### 安装依赖
+### 安装依赖
 ```go
 go mod tidy
 ```
-#### 配置修改
+### 配置修改
 app.js
 ```bash
 # Namespace、Pod、Container、shell需要修改
@@ -21,7 +22,7 @@ k8s_client.go
 // 修改kube config文件路径
 ```
 
-#### 访问地址
+### 访问地址
 ```go
 127.0.0.1:8090/web
 ```
