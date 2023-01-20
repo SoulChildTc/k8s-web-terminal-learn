@@ -1,4 +1,4 @@
-module sockjs
+module k8s-web-terminal-learn
 
 go 1.18
 

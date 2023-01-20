@@ -19,12 +19,13 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"log"
 	"net/http"
 	"sync"
 	"time"
+
+	"github.com/gin-gonic/gin"
 
 	"gopkg.in/igm/sockjs-go.v2/sockjs"
 	v1 "k8s.io/api/core/v1"
@@ -89,6 +90,7 @@ func (t TerminalSession) Read(p []byte) (int, error) {
 
 	switch msg.Op {
 	case "stdin":
+		fmt.Println("读取到:", msg.Data)
 		return copy(p, msg.Data), nil
 	case "resize":
 		t.sizeChan <- remotecommand.TerminalSize{Width: msg.Cols, Height: msg.Rows}
@@ -105,6 +107,7 @@ func (t TerminalSession) Write(p []byte) (int, error) {
 		Op:   "stdout",
 		Data: string(p),
 	})
+	fmt.Println("响应:", string(p))
 	if err != nil {
 		return 0, err
 	}
@@ -150,7 +153,7 @@ func (sm *SessionMap) Set(sessionId string, session TerminalSession) {
 	sm.Lock.Lock()
 	defer sm.Lock.Unlock()
 	sm.Sessions[sessionId] = session
-	fmt.Println(session)
+	// fmt.Println(session)
 }
 
 // Close shuts down the SockJS connection and sends the status code and reason to the client
@@ -237,8 +240,8 @@ func startProcess(c *gin.Context, cmd []string, ptyHandler PtyHandler) error {
 		fmt.Println("NewSPDYExecutor: ", err.Error())
 		return err
 	}
-	fmt.Println(cmd)
-	fmt.Println(ptyHandler)
+	// fmt.Println(cmd)
+	// fmt.Println(ptyHandler)
 	err = exec.Stream(remotecommand.StreamOptions{
 		Stdin:             ptyHandler,
 		Stdout:            ptyHandler,
@@ -282,7 +285,7 @@ func isValidShell(validShells []string, shell string) bool {
 // Waits for the SockJS connection to be opened by the client the session to be bound in handleTerminalSession
 func WaitForTerminal(c *gin.Context, sessionId string) {
 	shell := c.Query("shell")
-	fmt.Println(shell)
+	// fmt.Println(shell)
 
 	select {
 	case <-terminalSessions.Get(sessionId).bound:
